@@ -3,7 +3,7 @@ class ArrondissementsController < ApplicationController
   def index
     features = Arrondissement.all.map do |arr|
       { type: "Feature", id: arr.number, geometry: JSON.parse(arr.geojson),
-        properties: { number: arr.number, name: arr.official_name } }
+        properties: { number: arr.number, name: arr.official_name, commune: arr.commune? } }
     end
 
     render json: { type: "FeatureCollection", features: features }

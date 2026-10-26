@@ -14,7 +14,7 @@
         </span>
       </p>
       <h1 class="masthead__title">Pierres <em>de</em> Paris</h1>
-      <p class="masthead__tagline">Chronique des ventes immobilières, arrondissement par arrondissement.</p>
+      <p class="masthead__tagline">Chronique des ventes immobilières, arrondissement par arrondissement — et aux portes de Paris.</p>
     </header>
 
     <%= turbo_frame_tag "stats", class: "stats-frame" do %>
@@ -24,25 +24,12 @@
     <nav class="summary" aria-label="Arrondissements">
       <h3 class="summary__heading"><span>Sommaire</span><span>€/m² médian</span></h3>
       <ol class="summary__list">
-        <% @arrondissements.each_with_index do |arr, i| %>
-          <li style="--i: <%= i %>">
-            <%= link_to arrondissement_path(arr.number), class: "row",
-                  data: { turbo_frame: "stats", sidebar_target: "row", number: arr.number,
-                          action: "sidebar#select" } do %>
-              <span class="row__num"><%= arr.number %></span>
-              <span class="row__name">
-                <span class="row__official"><%= arr.official_name %></span>
-                <span class="row__count"><%= number_with_delimiter(arr.sales_count, delimiter: " ") %> ventes</span>
-              </span>
-              <span class="row__price">
-                <%= arr.median_price_m2 ? number_with_delimiter(arr.median_price_m2, delimiter: " ") : "—" %>
-              </span>
-              <% if arr.median_price_m2 && @max_median %>
-                <span class="row__bar" style="--w: <%= (arr.median_price_m2 * 100.0 / @max_median).round(1) %>%"></span>
-              <% end %>
-            <% end %>
-          </li>
-        <% end %>
+        <%= render partial: "dashboard/row", collection: @arrondissements, as: :arr, locals: { max_median: @max_median } %>
+      </ol>
+
+      <h3 class="summary__heading summary__heading--sub"><span>Aux portes de Paris</span><span>Hauts-de-Seine</span></h3>
+      <ol class="summary__list">
+        <%= render partial: "dashboard/row", collection: @communes, as: :arr, locals: { max_median: @max_median } %>
       </ol>
     </nav>
 

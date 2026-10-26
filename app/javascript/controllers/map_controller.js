@@ -1,7 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 const STYLE_URL = "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
-const PARIS_BOUNDS = [[2.224, 48.815], [2.47, 48.902]]
+// Paris + Clichy et Levallois-Perret au nord-ouest
+const PARIS_BOUNDS = [[2.224, 48.815], [2.47, 48.916]]
 
 // Palette froid → chaud, alignée sur le thème (bleu Haussmann → rouge brique).
 const PRICE_COLOR = [
@@ -75,10 +76,23 @@ export default class extends Controller {
     })
     this.map.addLayer({
       id: "contours-line", type: "line", source: "contours",
+      filter: ["!", ["get", "commune"]],
       paint: {
         "line-color": "#1f3a5f",
         "line-width": ["case", ["boolean", ["feature-state", "selected"], false], 2.6, 0.8],
         "line-opacity": ["case", ["boolean", ["feature-state", "selected"], false], 1, 0.45]
+      }
+    })
+
+    // Les communes limitrophes ont un contour en pointillés.
+    this.map.addLayer({
+      id: "communes-line", type: "line", source: "contours",
+      filter: ["get", "commune"],
+      paint: {
+        "line-color": "#a8382a",
+        "line-dasharray": [3, 2],
+        "line-width": ["case", ["boolean", ["feature-state", "selected"], false], 2.6, 1.2],
+        "line-opacity": ["case", ["boolean", ["feature-state", "selected"], false], 1, 0.7]
       }
     })
 

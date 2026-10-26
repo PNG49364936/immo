@@ -1,37 +1,44 @@
 require "net/http"
 
 module Dvf
-  # Télécharge les fichiers DVF géolocalisés de Paris (département 75).
+  # Télécharge les fichiers DVF géolocalisés de Paris (75) et des Hauts-de-Seine (92,
+  # pour Clichy et Levallois-Perret).
   # Etalab publie un fichier par année ; l'année en cours n'existe souvent pas
   # encore, on remonte donc jusqu'à trouver les `years_needed` plus récentes.
   class Downloader
-    BASE_URL = "https://files.data.gouv.fr/geo-dvf/latest/csv/%<year>d/departements/75.csv.gz".freeze
+    BASE_URL = "https://files.data.gouv.fr/geo-dvf/latest/csv/%<year>d/departements/%<department>s.csv.gz".freeze
+    DEPARTMENTS = %w[75 92].freeze
     MAX_REDIRECTS = 5
 
-    def initialize(dir: Rails.root.join("tmp/dvf"), years_needed: 2)
+    def initialize(dir: Rails.root.join("tmp/dvf"), years_needed: 2, departments: DEPARTMENTS)
       @dir = Pathname(dir)
       @years_needed = years_needed
+      @departments = departments
     end
 
-    # Renvoie les chemins des fichiers .csv.gz téléchargés, du plus récent au plus ancien.
+    # Renvoie les chemins des fichiers .csv.gz téléchargés, pour tous les départements.
     def call
       @dir.mkpath
-      paths = []
-      Date.current.year.downto(Date.current.year - 5) do |year|
-        path = download(year)
-        paths << path if path
-        break if paths.size == @years_needed
-      end
-      raise "Aucun fichier DVF trouvé pour Paris" if paths.empty?
-
-      paths
+      @departments.flat_map { |department| download_department(department) }
     end
 
     private
 
-    def download(year)
-      path = @dir.join("75-#{year}.csv.gz")
-      body = fetch(URI(format(BASE_URL, year: year)))
+    def download_department(department)
+      paths = []
+      Date.current.year.downto(Date.current.year - 5) do |year|
+        path = download(department, year)
+        paths << path if path
+        break if paths.size == @years_needed
+      end
+      raise "Aucun fichier DVF trouvé pour le département #{department}" if paths.empty?
+
+      paths
+    end
+
+    def download(department, year)
+      path = @dir.join("#{department}-#{year}.csv.gz")
+      body = fetch(URI(format(BASE_URL, year: year, department: department)))
       return nil unless body
 
       File.binwrite(path, body)

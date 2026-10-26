@@ -1,0 +1,16 @@
+<li style="--i: <%= arr_counter %>">
+  <%= link_to arrondissement_path(arr.number), class: class_names("row", "row--commune": arr.commune?),
+        data: { turbo_frame: "stats", sidebar_target: "row", number: arr.number, action: "sidebar#select" } do %>
+    <span class="row__num"><%= arr.badge %></span>
+    <span class="row__name">
+      <span class="row__official"><%= arr.official_name %></span>
+      <span class="row__count"><%= number_with_delimiter(arr.sales_count, delimiter: " ") %> ventes</span>
+    </span>
+    <span class="row__price">
+      <%= arr.median_price_m2 ? number_with_delimiter(arr.median_price_m2, delimiter: " ") : "—" %>
+    </span>
+    <% if arr.median_price_m2 && max_median %>
+      <span class="row__bar" style="--w: <%= (arr.median_price_m2 * 100.0 / max_median).round(1) %>%"></span>
+    <% end %>
+  <% end %>
+</li>

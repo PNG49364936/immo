@@ -204,6 +204,10 @@ body::before {
   border-bottom: 1px solid var(--ink);
 }
 
+.summary__heading--sub { margin-top: 22px; color: var(--brick); }
+
+.row--commune .row__num { font-size: 22px; letter-spacing: -0.02em; color: var(--brick); }
+
 .summary__list li {
   border-bottom: 1px solid var(--rule);
   animation: rise 0.55s cubic-bezier(.2,.7,.2,1) both;

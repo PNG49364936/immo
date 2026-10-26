@@ -1,6 +1,6 @@
 # Pierres de Paris
 
-Les ventes immobilières des 12 derniers mois disponibles dans les 20 arrondissements de Paris, sur une carte.
+Les ventes immobilières des 12 derniers mois disponibles dans les 20 arrondissements de Paris, ainsi qu'à Clichy et Levallois-Perret, sur une carte.
 
 ## Lancer l'app
 
@@ -15,8 +15,8 @@ Les données se mettent aussi à jour depuis l'app, avec le bouton « Rafraîchi
 
 ## Sources
 
-- **Ventes** : [DVF géolocalisées](https://files.data.gouv.fr/geo-dvf/latest/csv/) (Etalab), publiées deux fois par an avec environ 6 mois de retard.
-- **Contours** : [arrondissements](https://opendata.paris.fr/explore/dataset/arrondissements/) (Ville de Paris).
+- **Ventes** : [DVF géolocalisées](https://files.data.gouv.fr/geo-dvf/latest/csv/) (Etalab), départements 75 et 92, publiées deux fois par an avec environ 6 mois de retard.
+- **Contours** : [arrondissements](https://opendata.paris.fr/explore/dataset/arrondissements/) (Ville de Paris) et communes via [geo.api.gouv.fr](https://geo.api.gouv.fr).
 - **Fond de carte** : CARTO Positron, avec MapLibre GL.
 
 ## Filtres appliqués aux ventes

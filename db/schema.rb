@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_10_26_114714) do
+ActiveRecord::Schema[7.1].define(version: 2026_10_26_142804) do
   create_table "arrondissements", force: :cascade do |t|
     t.integer "number"
     t.string "insee_code"
@@ -21,6 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_10_26_114714) do
     t.integer "sales_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "kind", default: "arrondissement", null: false
     t.index ["insee_code"], name: "index_arrondissements_on_insee_code", unique: true
     t.index ["number"], name: "index_arrondissements_on_number", unique: true
   end
