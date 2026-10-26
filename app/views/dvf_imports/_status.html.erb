@@ -1,0 +1,16 @@
+<%# Statut de l'import DVF — remplacé en direct par Turbo Streams. %>
+<div id="dvf_import_status" class="import-status" data-state="<%= import&.status || "none" %>" data-import-target="status">
+  <% if import&.in_progress? %>
+    <span class="import-status__dot is-pulsing"></span>
+    <span>Téléchargement et analyse des ventes DVF…</span>
+  <% elsif import&.status == "failed" %>
+    <span class="import-status__dot is-error"></span>
+    <span>Échec de l'import : <%= import.error_message.to_s.truncate(80) %></span>
+  <% elsif import&.status == "done" %>
+    <span class="import-status__dot is-ok"></span>
+    <span>Synchronisé le <%= l import.finished_at.to_date, format: :long %></span>
+  <% else %>
+    <span class="import-status__dot"></span>
+    <span>Aucune donnée importée pour l'instant.</span>
+  <% end %>
+</div>

@@ -1,0 +1,73 @@
+<%= turbo_stream_from "dvf_imports" %>
+
+<div class="app">
+  <aside class="sidebar" data-controller="sidebar" data-action="map:pick@window->sidebar#pick">
+    <header class="masthead">
+      <p class="masthead__edition">
+        <span>N° <%= Date.current.year %></span>
+        <span>
+          <% if @last_done&.data_until %>
+            <%= l @last_done.data_from, format: "%-d %b %Y" %> → <%= l @last_done.data_until, format: "%-d %b %Y" %>
+          <% else %>
+            Aucune vente chargée
+          <% end %>
+        </span>
+      </p>
+      <h1 class="masthead__title">Pierres <em>de</em> Paris</h1>
+      <p class="masthead__tagline">Chronique des ventes immobilières, arrondissement par arrondissement.</p>
+    </header>
+
+    <%= turbo_frame_tag "stats", class: "stats-frame" do %>
+      <%= render "dashboard/paris_stats", paris: @paris %>
+    <% end %>
+
+    <nav class="summary" aria-label="Arrondissements">
+      <h3 class="summary__heading"><span>Sommaire</span><span>€/m² médian</span></h3>
+      <ol class="summary__list">
+        <% @arrondissements.each_with_index do |arr, i| %>
+          <li style="--i: <%= i %>">
+            <%= link_to arrondissement_path(arr.number), class: "row",
+                  data: { turbo_frame: "stats", sidebar_target: "row", number: arr.number,
+                          action: "sidebar#select" } do %>
+              <span class="row__num"><%= arr.number %></span>
+              <span class="row__name">
+                <span class="row__official"><%= arr.official_name %></span>
+                <span class="row__count"><%= number_with_delimiter(arr.sales_count, delimiter: " ") %> ventes</span>
+              </span>
+              <span class="row__price">
+                <%= arr.median_price_m2 ? number_with_delimiter(arr.median_price_m2, delimiter: " ") : "—" %>
+              </span>
+              <% if arr.median_price_m2 && @max_median %>
+                <span class="row__bar" style="--w: <%= (arr.median_price_m2 * 100.0 / @max_median).round(1) %>%"></span>
+              <% end %>
+            <% end %>
+          </li>
+        <% end %>
+      </ol>
+    </nav>
+
+    <footer class="colophon" data-controller="import">
+      <%= render "dvf_imports/status", import: @import %>
+      <%= button_to "Rafraîchir les données", dvf_imports_path, class: "refresh-btn",
+                    form: { data: { action: "turbo:submit-start->import#start" } },
+                    data: { import_target: "button" } %>
+      <p class="colophon__source">
+        Source : <a href="https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/" target="_blank" rel="noopener">DVF géolocalisées</a>, Etalab · Contours : Ville de Paris
+      </p>
+    </footer>
+  </aside>
+
+  <section class="map-panel">
+    <div class="map" data-controller="map"
+         data-map-sales-url-value="<%= sales_path(format: :json) %>"
+         data-map-contours-url-value="<%= arrondissements_path(format: :json) %>"
+         data-action="arrondissement:select@window->map#focus arrondissement:reset@window->map#reset"></div>
+
+    <div class="legend" aria-hidden="true">
+      <p class="legend__title">Prix au m²</p>
+      <div class="legend__scale"></div>
+      <div class="legend__labels"><span>7 k€</span><span>10 k€</span><span>13 k€</span><span>16 k€+</span></div>
+      <p class="legend__note">Un point = une vente</p>
+    </div>
+  </section>
+</div>

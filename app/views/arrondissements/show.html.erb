@@ -1,0 +1,10 @@
+<%= turbo_frame_tag "stats" do %>
+  <div class="stats-wrap" data-arrondissement="<%= @arrondissement.number %>">
+    <%= render "shared/stats", kicker: "#{@arrondissement.ordinal} arrondissement",
+               title: @arrondissement.official_name,
+               median: @arrondissement.median_price_m2, count: @arrondissement.sales_count,
+               paris_median: @paris.median_price_m2 %>
+    <%= link_to "← Revenir à tout Paris", root_path, class: "back-link",
+                data: { turbo_frame: "stats", action: "sidebar#reset" } %>
+  </div>
+<% end %>

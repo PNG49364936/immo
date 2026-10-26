@@ -1,0 +1,29 @@
+<%# locals: (kicker:, title:, subtitle: nil, median:, count:, paris_median: nil) %>
+<article class="stats">
+  <p class="kicker"><%= kicker %></p>
+  <h2 class="stats__title"><%= title %></h2>
+  <% if subtitle %><p class="stats__subtitle"><%= subtitle %></p><% end %>
+
+  <dl class="stats__grid">
+    <div>
+      <dt>Prix médian</dt>
+      <dd>
+        <span class="figure"><%= median ? number_with_delimiter(median, delimiter: " ") : "—" %></span>
+        <span class="unit">€/m²</span>
+      </dd>
+      <% if median && paris_median %>
+        <% delta = ((median - paris_median) * 100.0 / paris_median).round %>
+        <p class="delta <%= delta.positive? ? "is-up" : "is-down" %>">
+          <%= delta.positive? ? "+" : "−" %><%= delta.abs %> % vs Paris
+        </p>
+      <% end %>
+    </div>
+    <div>
+      <dt>Ventes</dt>
+      <dd>
+        <span class="figure"><%= number_with_delimiter(count, delimiter: " ") %></span>
+        <span class="unit">en 12 mois</span>
+      </dd>
+    </div>
+  </dl>
+</article>
