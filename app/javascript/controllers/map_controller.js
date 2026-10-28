@@ -103,9 +103,16 @@ export default class extends Controller {
     const popup = new maplibregl.Popup({ closeButton: false, offset: 10, className: "sale-popup" })
 
     this.map.on("click", "sales", (e) => {
-      const { p, m2 } = e.features[0].properties
+      const { p, m2, s, r, t } = e.features[0].properties
+      const rooms = r > 0 ? `${r} pièce${r > 1 ? "s" : ""}` : "pièces n.c."
       popup.setLngLat(e.features[0].geometry.coordinates)
-        .setHTML(`<strong>${euros.format(p)}</strong><span>${euros.format(m2)} / m²</span>`)
+        .setHTML(`
+          <p class="sale-popup__kicker">${t} · ${rooms}</p>
+          <strong>${euros.format(p)}</strong>
+          <dl>
+            <div><dt>Surface</dt><dd>${s} m²</dd></div>
+            <div><dt>Prix au m²</dt><dd>${euros.format(m2)}</dd></div>
+          </dl>`)
         .addTo(this.map)
     })
 

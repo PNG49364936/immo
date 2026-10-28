@@ -359,16 +359,32 @@ body::before {
 /* Popup de vente */
 .sale-popup .maplibregl-popup-content {
   display: grid;
-  gap: 2px;
-  padding: 8px 12px;
+  gap: 4px;
+  min-width: 190px;
+  padding: 10px 14px 12px;
   background: var(--ink);
   color: var(--paper);
   border-radius: 0;
   box-shadow: 3px 3px 0 var(--ochre);
   font-family: var(--font-mono);
 }
-.sale-popup strong { font-family: var(--font-display); font-weight: 400; font-size: 20px; }
-.sale-popup span { font-size: 11px; color: rgba(244, 239, 230, 0.75); }
+.sale-popup__kicker {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ochre);
+}
+.sale-popup strong { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.sale-popup dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 4px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(244, 239, 230, 0.2);
+}
+.sale-popup dl > div + div { border-left: 1px solid rgba(244, 239, 230, 0.2); padding-left: 10px; }
+.sale-popup dt { font-family: var(--font-serif); font-style: italic; font-size: 12px; color: rgba(244, 239, 230, 0.65); }
+.sale-popup dd { font-size: 13px; font-weight: 500; }
 .sale-popup .maplibregl-popup-tip { border-top-color: var(--ink); border-bottom-color: var(--ink); }
 
 .maplibregl-ctrl-group { border-radius: 0 !important; box-shadow: 3px 3px 0 var(--rule) !important; border: 1px solid var(--ink); }
