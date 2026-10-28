@@ -375,6 +375,14 @@ body::before {
   color: var(--ochre);
 }
 .sale-popup strong { font-family: var(--font-display); font-weight: 400; font-size: 24px; line-height: 1.1; }
+.sale-popup__address {
+  max-width: 230px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.3;
+  color: rgba(244, 239, 230, 0.85);
+}
 .sale-popup dl {
   display: grid;
   grid-template-columns: 1fr 1fr;

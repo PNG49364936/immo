@@ -16,6 +16,10 @@ const PRICE_COLOR = [
 
 const euros = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 })
 
+// L'adresse vient d'un fichier externe : on l'échappe avant de l'insérer en HTML.
+const escapeHTML = (text) =>
+  String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c])
+
 export default class extends Controller {
   static values = { salesUrl: String, contoursUrl: String }
 
@@ -103,12 +107,13 @@ export default class extends Controller {
     const popup = new maplibregl.Popup({ closeButton: false, offset: 10, className: "sale-popup" })
 
     this.map.on("click", "sales", (e) => {
-      const { p, m2, s, r, t } = e.features[0].properties
+      const { p, m2, s, r, t, ad } = e.features[0].properties
       const rooms = r > 0 ? `${r} pièce${r > 1 ? "s" : ""}` : "pièces n.c."
       popup.setLngLat(e.features[0].geometry.coordinates)
         .setHTML(`
           <p class="sale-popup__kicker">${t} · ${rooms}</p>
           <strong>${euros.format(p)}</strong>
+          <p class="sale-popup__address">${escapeHTML(ad)}</p>
           <dl>
             <div><dt>Surface</dt><dd>${s} m²</dd></div>
             <div><dt>Prix au m²</dt><dd>${euros.format(m2)}</dd></div>
