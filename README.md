@@ -1,6 +1,6 @@
 # Pierres de Paris
 
-Les ventes immobilières des 12 derniers mois disponibles dans les 20 arrondissements de Paris, ainsi qu'à Clichy et Levallois-Perret, sur une carte.
+Les ventes immobilières des 2 dernières années disponibles (24 mois) dans les 20 arrondissements de Paris, ainsi qu'à Clichy et Levallois-Perret, sur une carte.
 
 ## Lancer l'app
 

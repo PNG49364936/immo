@@ -10,7 +10,7 @@ module Dvf
     DEPARTMENTS = %w[75 92].freeze
     MAX_REDIRECTS = 5
 
-    def initialize(dir: Rails.root.join("tmp/dvf"), years_needed: 2, departments: DEPARTMENTS)
+    def initialize(dir: Rails.root.join("tmp/dvf"), years_needed: 3, departments: DEPARTMENTS)
       @dir = Pathname(dir)
       @years_needed = years_needed
       @departments = departments

@@ -16,7 +16,9 @@ module Dvf
     Sale = Struct.new(:mutation_id, :sold_on, :price, :surface, :rooms, :property_type,
                       :address, :insee_code, :lat, :lng, :price_m2, keyword_init: true)
 
-    def initialize(paths, months: 12)
+    MONTHS = 24 # 2 ans de ventes (ex. : 2024 et 2025)
+
+    def initialize(paths, months: MONTHS)
       @paths = Array(paths)
       @months = months
     end
@@ -26,7 +28,7 @@ module Dvf
       return [] if sales.empty?
 
       latest = sales.map(&:sold_on).max
-      cutoff = latest << @months # même jour, 12 mois plus tôt
+      cutoff = latest << @months # même jour, 24 mois plus tôt
       sales.select { |sale| sale.sold_on > cutoff }
     end
 

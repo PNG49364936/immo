@@ -1,5 +1,5 @@
 module Dvf
-  # Remplace les ventes en base par celles des 12 derniers mois disponibles,
+  # Remplace les ventes en base par celles des 24 derniers mois disponibles,
   # puis recalcule les statistiques de chaque arrondissement.
   class Importer
     Result = Struct.new(:count, :data_from, :data_until, keyword_init: true)

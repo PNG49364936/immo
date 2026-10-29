@@ -56,11 +56,11 @@ class Dvf::ParserTest < ActiveSupport::TestCase
     assert_empty sales
   end
 
-  test "ne garde que les 12 mois précédant la vente la plus récente" do
+  test "ne garde que les 24 mois précédant la vente la plus récente" do
     sales = parse([
       row("RECENT", "Appartement", date: "2025-12-31"),
-      row("DANS", "Appartement", date: "2025-01-15"),
-      row("VIEUX", "Appartement", date: "2024-11-30")
+      row("DANS", "Appartement", date: "2024-01-01"),
+      row("VIEUX", "Appartement", date: "2023-12-31")
     ])
 
     assert_equal %w[DANS RECENT], sales.map(&:mutation_id).sort

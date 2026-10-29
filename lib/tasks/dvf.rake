@@ -1,5 +1,5 @@
 namespace :dvf do
-  desc "Télécharge DVF et recharge les ventes des 12 derniers mois disponibles"
+  desc "Télécharge DVF et recharge les ventes des 24 derniers mois disponibles"
   task import: :environment do
     import = DvfImport.create!
     ImportDvfJob.perform_now(import)
